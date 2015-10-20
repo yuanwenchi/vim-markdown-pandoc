@@ -4,6 +4,8 @@ Lets you focus on editing your documentation, recording your life.
 Vim-markdown-pandoc will organize file's create, convert and pre-view.  
 It converts markdown base on pandoc. 
 
+_I am not familiar with the syntax of the vim-script, if you like the script, welcome to improve it._
+
 ## Intruduction
 
 Vim-markdown-pandoc can conveniently edit markdown by vim. It can fastly generate html, docx and so on.
@@ -13,7 +15,7 @@ Vim-markdown-pandoc provids a scheme for organizing markdown source file, and pr
 ## Install
 
 1. Need pandoc
-```bash
+```sh
 apt-get install pandoc
 ```
 
@@ -58,3 +60,6 @@ Change brower, default`firefox`
 let g:g_markdown_brower=''
 ```
 
+## about me
+
+yuanwenchi@126.com
