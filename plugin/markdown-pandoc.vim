@@ -5,7 +5,7 @@ if !exists('*system')
 endif
 
 if !exists('g:g_markdown_path')
-	let g:g_markdown_path='~/my_markdown/'
+	let g:g_markdown_path=$HOME . '/my_markdown/'
 endif
 
 if !exists('g:g_markdown_browser')
@@ -52,9 +52,11 @@ function MdconvertHTML(src_path, src_file)
 	call MdReplaceTOCattr(s:out_file)
 endfunction
 
-function MdconvertDocx(src_path, src_file)
-	let s:src_file=a:src_path . '/' . a:src_file
-	let s:out_file=s:s_markdown_output_doc . a:src_file . '.docx'
+function MdconvertDocx()
+	let s:path=getcwd()
+	let s:file=expand("%")
+	let s:src_file=s:path . '/' . s:file
+	let s:out_file=s:s_markdown_output_doc . s:file . '.docx'
 	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_flag . ' -o ' . s:out_file)
 endfunction
 
@@ -87,6 +89,8 @@ function MdNewMD()
 	let s:check = findfile(s:file . '.md', s:s_markdown_src)
 
 	if empty(s:check)
+		echomsg s:s_markdown_src
+		echomsg "123"
 		exec ':s/' . s:file . '/[' . s:file . '](' . s:file .'.md.html)'
 		exec ':w'
 		let s:tmp=system('touch ' . s:s_markdown_src . s:file . '.md')
