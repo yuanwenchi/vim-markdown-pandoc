@@ -18,7 +18,8 @@ endif
 
 
 let s:s_markdown_css=g:g_markdown_path . 'css/'
-let s:s_markdown_output=g:g_markdown_path . 'md_html/'
+let s:s_markdown_output_html=g:g_markdown_path . 'md_html/'
+let s:s_markdown_output_doc=g:g_markdown_path . 'md_doc/'
 let s:s_markdown_src=g:g_markdown_path . 'md/'
 let s:s_markdown_toc=' --table-of-contents '
 let s:s_markdown_dzsilde=' -s --mathml -i -t dzslides '
@@ -29,7 +30,8 @@ function MdInitdir(css_src)
 	let s:base_dir=finddir(g:g_markdown_path)
 	if empty(s:base_dir)
 		let s:tmp=system('mkdir -p ' . s:s_markdown_css)
-		let s:tmp=system('mkdir -p ' . s:s_markdown_output)
+		let s:tmp=system('mkdir -p ' . s:s_markdown_output_html)
+		let s:tmp=system('mkdir -p ' . s:s_markdown_output_doc)
 		let s:tmp=system('mkdir -p ' . s:s_markdown_src)
 		let s:tmp=system('touch ' . s:s_markdown_src . 'index.md')
 		let s:tmp=system('cp ' . a:css_src . '/../src/main.css ' . s:s_markdown_css)
@@ -45,14 +47,20 @@ endif
 
 function MdconvertHTML(src_path, src_file)
 	let s:src_file=a:src_path . '/' . a:src_file
-	let s:out_file=s:s_markdown_output . a:src_file . '.html'
+	let s:out_file=s:s_markdown_output_html . a:src_file . '.html'
 	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_flag . ' -o ' . s:out_file)
 	call MdReplaceTOCattr(s:out_file)
 endfunction
 
+function MdconvertDocx(src_path, src_file)
+	let s:src_file=a:src_path . '/' . a:src_file
+	let s:out_file=s:s_markdown_output_doc . a:src_file . '.docx'
+	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_flag . ' -o ' . s:out_file)
+endfunction
+
 function MdconvertSlideHTML(src_path, src_file)
 	let s:src_file=a:src_path . '/' . a:src_file
-	let s:out_file=s:s_markdown_output . a:src_file . '_slide.html'
+	let s:out_file=s:s_markdown_output_html . a:src_file . '_slide.html'
 	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_dzsilde . ' -o ' . s:out_file)
 endfunction
 
@@ -60,7 +68,7 @@ function MdconvertHTMLandOpen()
 	let s:path=getcwd()
 	let s:file=expand("%")
 	call MdconvertHTML(s:path, s:file)
-	let s:tmp=system(g:g_markdown_browser . ' ' . s:s_markdown_output . s:file . '.html')
+	let s:tmp=system(g:g_markdown_browser . ' ' . s:s_markdown_output_html . s:file . '.html')
 endfunction
 
 function MdconvertAll()
@@ -106,4 +114,5 @@ endfunction
 nmap <Leader>mm :call OpenNewBuf('index.md') <CR>
 nmap <Leader>mn :call MdNewMD() <CR>
 nmap <Leader>mh :call MdconvertHTMLandOpen() <CR>
+nmap <Leader>md :call MdconvertDocx() <CR>
 nmap <Leader>ma :call MdconvertAll() <CR>
