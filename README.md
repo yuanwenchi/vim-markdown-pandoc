@@ -44,6 +44,7 @@ nmap <Leader>mm :call OpenNewBuf('index.md') <CR>
 nmap <Leader>mn :call MdNewMD() <CR>
 " Convert current md file to html and open it by brower
 nmap <Leader>mh :call MdconvertHTMLandOpen() <CR>
+nmap <Leader>md :call MdconvertDocx() <CR>
 nmap <Leader>ma :call MdconvertAll() <CR>
 ```
 
