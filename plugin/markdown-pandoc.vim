@@ -1,5 +1,5 @@
 if !exists('*system')
-	echomsg 'markdown-pandoc: Vim system() built-in function is not available. ' .
+	echomsg 'markdown-pandoc: Vim system() built-in function! is not available. ' .
 				\ 'Plugin is not loaded.'
 	finish
 endif
@@ -26,7 +26,7 @@ let s:s_markdown_dzsilde=' -s --mathml -i -t dzslides '
 let s:s_markdown_sildy=' -s --webtex -i -t slidy '
 let s:s_markdown_flag=' -c ' . s:s_markdown_css . 'main.css' . s:s_markdown_toc . g:g_markdown_exflag . ' '
 
-function MdInitdir(css_src)
+function! MdInitdir(css_src)
 	let s:base_dir=finddir(g:g_markdown_path)
 	if empty(s:base_dir)
 		let s:tmp=system('mkdir -p ' . s:s_markdown_css)
@@ -45,14 +45,14 @@ if !finddir(g:g_markdown_path)
 endif
 
 
-function MdconvertHTML(src_path, src_file)
+function! MdconvertHTML(src_path, src_file)
 	let s:src_file=a:src_path . '/' . a:src_file
 	let s:out_file=s:s_markdown_output_html . a:src_file . '.html'
 	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_flag . ' -o ' . s:out_file)
 	call MdReplaceTOCattr(s:out_file)
 endfunction
 
-function MdconvertDocx()
+function! MdconvertDocx()
 	let s:path=getcwd()
 	let s:file=expand("%")
 	let s:src_file=s:path . '/' . s:file
@@ -60,31 +60,31 @@ function MdconvertDocx()
 	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_flag . ' -o ' . s:out_file)
 endfunction
 
-function MdconvertSlideHTML(src_path, src_file)
+function! MdconvertSlideHTML(src_path, src_file)
 	let s:src_file=a:src_path . '/' . a:src_file
 	let s:out_file=s:s_markdown_output_html . a:src_file . '_slide.html'
 	let s:tmp=system('pandoc ' . s:src_file . s:s_markdown_dzsilde . ' -o ' . s:out_file)
 endfunction
 
-function MdconvertHTMLandOpen()
+function! MdconvertHTMLandOpen()
 	let s:path=getcwd()
 	let s:file=expand("%")
 	call MdconvertHTML(s:path, s:file)
 	let s:tmp=system(g:g_markdown_browser . ' ' . s:s_markdown_output_html . s:file . '.html')
 endfunction
 
-function MdconvertAll()
+function! MdconvertAll()
 	let s:flst=system('ls ' . s:s_markdown_src)
 	for s:temp in split(s:flst)
 		call MdconvertHTML(s:s_markdown_src, s:temp)
 	endfor
 endfunction
 
-function OpenNewBuf(file)
+function! OpenNewBuf(file)
 	exec ':e ' . s:s_markdown_src . a:file
 endfunction
 
-function MdNewMD()
+function! MdNewMD()
 	let s:file=expand("<cword>")
 	let s:check = findfile(s:file . '.md', s:s_markdown_src)
 
@@ -100,7 +100,7 @@ function MdNewMD()
 endfunction
 
 "Add html table-of-contents part base on org-mode css
-function MdReplaceTOCattr(file)
+function! MdReplaceTOCattr(file)
 	exec 'vsp ' . a:file
 	let s:tmp=search('<div id="TOC">')
 	if empty(s:tmp)
