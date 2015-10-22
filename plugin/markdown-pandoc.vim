@@ -89,8 +89,6 @@ function! MdNewMD()
 	let s:check = findfile(s:file . '.md', s:s_markdown_src)
 
 	if empty(s:check)
-		echomsg s:s_markdown_src
-		echomsg "123"
 		exec ':s/' . s:file . '/[' . s:file . '](' . s:file .'.md.html)'
 		exec ':w'
 		let s:tmp=system('touch ' . s:s_markdown_src . s:file . '.md')
